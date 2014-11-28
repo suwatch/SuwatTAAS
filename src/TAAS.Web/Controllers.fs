@@ -8,30 +8,28 @@ open System.Net
 
 open TAAS.Contract
 open Commands
+open Events
 open Types
 
 open TAAS.Infrastructure
 open EventStore.DummyEventStore
 
+open TAAS.Domain
+open CommandHandling
+open EventHandling
+
 open TAAS.Application.Builder
 
-module WebStart = 
+module WebStart =
     let es = create()
-    let appendStream = appendToStream es
-    let readStream = readFromStream es
+ 
+    let app command = 
+        let appendStream = appendToStream es
+        let readStream = readFromStream es
+        let app = createApplication readStream appendStream
+        app command
 
-    let app = createApplication readStream appendStream
-
-type OwinAppSetup() =
-    member this.Configuration (app:IAppBuilder) = 
-        let config = 
-            let config = new HttpConfiguration()
-            config.MapHttpAttributeRoutes()
-            config
-        app.UseWebApi config |> ignore
-        app.Run(fun c -> c.Response.WriteAsync("Hello TAAS! Why haven't you handled this?"))
-
-module controllers = 
+module Controllers = 
     open WebStart
 
     [<RoutePrefix("api")>]
@@ -44,19 +42,21 @@ module controllers =
                 (CreateAccount(AccountId(Guid.NewGuid()), "Hello world")))
 
     exception InvalidCommand
-
     [<RoutePrefix("api/account")>]
     type AccountController() = 
         inherit ApiController()
         [<Route>]
         member this.Post (command:AccountCommand) = 
-    //        let es = create()
-    //        let appendStream = appendToStream es
-    //        let readStream = readFromStream es
-    //
-    //        let app = createApplication readStream appendStream
-    //        let app c = this.Request.CreateResponse(HttpStatusCode.OK, c)
             match command with
-            | CreateAccount(_) -> app (AccountCommand(command))
+            | CreateAccount(_) -> app (AccountCommand(command)) |> ignore
             | _ -> raise InvalidCommand
             this.Request.CreateResponse(HttpStatusCode.OK, command)
+
+    [<RoutePrefix("api/events/{id}")>]
+    type EventsController() = 
+        inherit ApiController()
+        [<Route>]
+        member this.Get(id:Guid) =
+            let streamId = toStreamId id
+            let events = readFromStream es streamId
+            this.Request.CreateResponse(HttpStatusCode.OK, events)

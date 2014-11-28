@@ -23,10 +23,8 @@ module Test =
         let readStream = readFromStream es
         let application = createApplication readStream appendStream
 
-        let fnr = fødselsnummer "08080812345" |> Option.get
         let id = Guid.NewGuid()
         let personId = AccountId(id)
-        let adresse = {Linjer = "hello"}
         let c1 = AccountCommand(CreateAccount(personId, "jansson"))
         application c1
         

@@ -71,9 +71,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OwinAppSetup.fs" />
+    <Compile Include="Controllers.fs" />
     <None Include="packages.config" />
     <None Include="app.config" />
+    <Compile Include="OwinAppSetup.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAAS.Application\TAAS.Application.fsproj">

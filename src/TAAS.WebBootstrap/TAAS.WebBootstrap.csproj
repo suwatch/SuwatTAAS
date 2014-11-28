@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin">
       <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -81,6 +84,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TAAS.Application\TAAS.Application.fsproj">
+      <Project>{955e6b47-91c1-40a0-80da-5317d79720bf}</Project>
+      <Name>TAAS.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TAAS.Contract\TAAS.Contract.fsproj">
+      <Project>{7ecf1bc0-3351-428a-af81-ae09f3cc9f6b}</Project>
+      <Name>TAAS.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TAAS.Domain\TAAS.Domain.fsproj">
+      <Project>{4a6b3ed7-a869-4de7-9013-60e5518da3f1}</Project>
+      <Name>TAAS.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TAAS.EventStore\TAAS.Infrastructure.fsproj">
+      <Project>{b56a2384-57f0-4e38-8a7c-63e583d12817}</Project>
+      <Name>TAAS.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TAAS.Web\TAAS.Web.fsproj">
       <Project>{bf90c064-5fde-4be1-8d1e-782788745d96}</Project>
       <Name>TAAS.Web</Name>

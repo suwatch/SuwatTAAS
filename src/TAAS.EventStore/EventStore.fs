@@ -40,7 +40,7 @@ module DummyEventStore =
     type EventStream = {mutable Events: (Event * int) list} with
         member this.addEvents events = (this.Events <- events) |> ignore
         static member Version stream =
-            stream.Events |> List.last |> snd
+            stream.Events |> List.map snd |> List.max
 
     type EventStore = {mutable Streams : Map<string, EventStream> }
 

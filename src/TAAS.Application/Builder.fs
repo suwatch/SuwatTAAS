@@ -26,8 +26,6 @@ let createApplication readStream appendStream =
         let streamId = toStreamId id
         appendStream streamId expectedVersion newEvents
 
-    let getPerson (x:string) (y:Fødselsnummer) = {Navn = {Fornavn = "Tomas"; Mellomnavn = None; Etternavn = "Jansson"}; Adresse = {Linjer = "Linje 1"}}
-
     let defaultDependencies = {
         Hasher = (fun (Password x) -> PasswordHash x) 
     }
@@ -36,3 +34,4 @@ let createApplication readStream appendStream =
         let aggregateId = aggId command
         let state = loadState command aggregateId 
         state ||> fun version state -> (version, handle defaultDependencies command state) ||> save aggregateId 
+//    fun command -> command
