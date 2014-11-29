@@ -7,7 +7,8 @@ open Commands
 open Events
 
 open TAAS.Infrastructure
-open EventStore.DummyEventStore
+//open EventStore.DummyEventStore
+open EventStore.EventStore
 
 open TAAS.Domain
 open TAAS.Application
@@ -18,7 +19,7 @@ open Newtonsoft.Json
 module Test = 
 
     let doStuff = 
-        let es = create()
+        let es = connect()
         let appendStream = appendToStream es
         let readStream = readFromStream es
         let application = createApplication readStream appendStream
@@ -37,7 +38,6 @@ module Test =
         printfn "deserialized: %A" deserialized
         printfn "deserialized: %O" deserialized
 
-        let es = create()
         appendToStream es "test" -1 events
         let (version, readEvents) = readFromStream es "test"
         printf "Read: %A, Version: %d" readEvents version

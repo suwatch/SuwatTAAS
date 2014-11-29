@@ -2,6 +2,10 @@
 open TAAS.Contract
 open Events
 
+open Newtonsoft.Json
+
+open Microsoft.FSharp.Reflection
+
 exception VersionError
 
 [<AutoOpen>]
@@ -29,8 +33,8 @@ module AsyncExtensions =
 
     type IEventStoreConnection with
         member this.AsyncConnect() = Async.AwaitTask(this.ConnectAsync())
-        member this.AsyncReadStreamEventsForward stream start count resolveLinkTos =
-            Async.AwaitTask(this.ReadStreamEventsForwardAsync(stream, start, count, resolveLinkTos))
+        member this.AsyncReadStreamEventsForward stream resolveLinkTos =
+            Async.AwaitTask(this.ReadStreamEventsForwardAsync(stream, 0, System.Int32.MaxValue, resolveLinkTos))
         member this.AsyncAppendToStream stream expectedVersion events =
             Async.AwaitTask(this.AppendToStreamAsync(stream, expectedVersion, events))
         member this.AsyncSubscribeToAll(resolveLinkTos, eventAppeared, userCredentials) =
@@ -70,10 +74,55 @@ module EventStore =
     open System
     open System.Net
     open EventStore.ClientAPI
+    open Newtonsoft.Json
+    open EventStore.ClientAPI.SystemData
 
     let connect() = 
-        let endpoint = new IPEndPoint(IPAddress.Loopback, 2113)
-        let connection = EventStoreConnection.Create(endpoint)
+        let ipadress = IPAddress.Parse("192.168.50.69")
+        let endpoint = new IPEndPoint(ipadress, 1113)
+        let esSettings = 
+            let s = ConnectionSettings.Create()
+                        .UseConsoleLogger()
+                        .SetDefaultUserCredentials(new UserCredentials("admin", "changeit"))
+                        .Build()
+            s
+
+        let connection = EventStoreConnection.Create(esSettings, endpoint, null)
         connection.AsyncConnect() |> Async.RunSynchronously
         connection
+
+    let settings = 
+        let settings = new JsonSerializerSettings()
+        settings.TypeNameHandling <- TypeNameHandling.Auto
+        settings
+
+    let serialize (event:'a)= 
+        let serializedEvent = JsonConvert.SerializeObject(event, settings)
+        let data = System.Text.Encoding.UTF8.GetBytes(serializedEvent)
+        let case,_ = FSharpValue.GetUnionFields(event, typeof<'a>)
+        EventData(Guid.NewGuid(), case.Name, true, data, null)
+
+    let deserialize (event: ResolvedEvent) = 
+        let serializedString = System.Text.Encoding.UTF8.GetString(event.Event.Data)
+        let event = JsonConvert.DeserializeObject<Event>(serializedString, settings)
+        event
+
+    let readFromStream (store: IEventStoreConnection) streamId = 
+        let slice = store.ReadStreamEventsForwardAsync(streamId, 0, Int32.MaxValue, false).Result
+
+        let events:seq<Event> = 
+            slice.Events 
+            |> Seq.map deserialize
+            |> Seq.cast 
+        
+        let nextEventNumber = 
+            if slice.IsEndOfStream 
+            then None 
+            else Some slice.NextEventNumber
+
+        slice.LastEventNumber, (events |> Seq.toList)
+
+    let appendToStream (store:IEventStoreConnection) streamId expectedVersion newEvents =
+        let serializedEvents = newEvents |> List.map serialize |> List.toArray
+        Async.RunSynchronously <| store.AsyncAppendToStream streamId expectedVersion serializedEvents
 

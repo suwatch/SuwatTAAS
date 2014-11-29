@@ -12,7 +12,8 @@ open Events
 open Types
 
 open TAAS.Infrastructure
-open EventStore.DummyEventStore
+//open EventStore.DummyEventStore
+open EventStore.EventStore
 
 open TAAS.Domain
 open CommandHandling
@@ -21,13 +22,11 @@ open EventHandling
 open TAAS.Application.Builder
 
 module WebStart =
-    let es = create()
+    let es = connect()
  
-    let app command = 
-        let appendStream = appendToStream es
-        let readStream = readFromStream es
-        let app = createApplication readStream appendStream
-        app command
+    let appendStream = appendToStream es
+    let readStream = readFromStream es
+    let app = createApplication readStream appendStream
 
 module Controllers = 
     open WebStart
