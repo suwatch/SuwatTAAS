@@ -1,7 +1,4 @@
 ﻿module TAAS.Infrastructure.EventStore
-open TAAS.Contract
-open Events
-
 open Newtonsoft.Json
 
 open Microsoft.FSharp.Reflection
@@ -41,6 +38,8 @@ module AsyncExtensions =
             Async.AwaitTask(this.SubscribeToAllAsync(resolveLinkTos, eventAppeared, userCredentials = userCredentials))
 
 module DummyEventStore = 
+    open TAAS.Contract
+    open Events
     type EventStream = {mutable Events: (Event * int) list} with
         member this.addEvents events = (this.Events <- events) |> ignore
         static member Version stream =
@@ -102,17 +101,17 @@ module EventStore =
         let case,_ = FSharpValue.GetUnionFields(event, typeof<'a>)
         EventData(Guid.NewGuid(), case.Name, true, data, null)
 
-    let deserialize (event: ResolvedEvent) = 
+    let deserialize<'a> (event: ResolvedEvent) = 
         let serializedString = System.Text.Encoding.UTF8.GetString(event.Event.Data)
-        let event = JsonConvert.DeserializeObject<Event>(serializedString, settings)
+        let event = JsonConvert.DeserializeObject<'a>(serializedString, settings)
         event
 
     let readFromStream (store: IEventStoreConnection) streamId = 
         let slice = store.ReadStreamEventsForwardAsync(streamId, 0, Int32.MaxValue, false).Result
 
-        let events:seq<Event> = 
+        let events:seq<'a> = 
             slice.Events 
-            |> Seq.map deserialize
+            |> Seq.map deserialize<'a>
             |> Seq.cast 
         
         let nextEventNumber = 

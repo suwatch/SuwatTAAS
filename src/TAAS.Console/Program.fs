@@ -29,17 +29,18 @@ module Test =
         let c1 = AccountCommand(CreateAccount(personId, "jansson"))
         application c1
         
-        let (version, events) = readFromStream es (toStreamId id)
+        let (version, (events: Event list)) = readFromStream es (toStreamId id)
 
         let serialized = JsonConvert.SerializeObject(events)
         printfn "serialized: %s" serialized
 
         let deserialized = JsonConvert.DeserializeObject<Event list>(serialized)
         printfn "deserialized: %A" deserialized
-        printfn "deserialized: %O" deserialized
+//        printfn "deserialized: %O" deserialized
 
-        appendToStream es "test" -1 events
-        let (version, readEvents) = readFromStream es "test"
+        let testId = sprintf "test-%O" id
+        appendToStream es testId -1 events |> ignore
+        let (version, (readEvents: Event list)) = readFromStream es "test"
         printf "Read: %A, Version: %d" readEvents version
 
 open Test
