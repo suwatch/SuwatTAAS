@@ -13,6 +13,8 @@ open EventHandling
 open CommandHandling
 open State
 
+open TAAS.Infrastructure.Railroad
+
 open Specification
 
 module ``When Adding User To An Account`` = 
@@ -22,6 +24,16 @@ module ``When Adding User To An Account`` =
         let accountId = Guid.NewGuid()
         let encryptedPassword = "secretStuff"
         let hasher (Password x) = PasswordHash encryptedPassword
-        Given ([], Some {defaultDependencies with Hasher = hasher})
+        Given ([(accountId, [AccountCreated(AccountId accountId, "")])], Some {defaultDependencies with Hasher = hasher})
         |> When (Command.UserCommand(AddUserToAccount(UserId(id), "Name", Password("Password"), AccountId(accountId))))
         |> Expect [UserAddedToAccount(UserId(id), "Name", (PasswordHash encryptedPassword), AccountId(accountId))]
+
+    [<Fact>]
+    let ``should fail if account doesn't exist``() =
+        let id = Guid.NewGuid()
+        let accountId = Guid.NewGuid()
+        let encryptedPassword = "secretStuff"
+        let hasher (Password x) = PasswordHash encryptedPassword
+        Given ([], Some {defaultDependencies with Hasher = hasher})
+        |> When (Command.UserCommand(AddUserToAccount(UserId(id), "Name", Password("Password"), AccountId(accountId))))
+        |> ExpectFail (UserAccountIsMissing accountId)

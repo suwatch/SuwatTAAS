@@ -1,5 +1,7 @@
 ﻿module TAAS.Domain.User
 
+open Account
+
 open TAAS.Contract
 open Commands
 open Events
@@ -18,6 +20,8 @@ let getUserState dependencies id = evolveUser initUser ((dependencies.ReadEvents
 
 let handleUser dependencies (uc:UserCommand) =
     match uc with
-    | AddUserToAccount(UserId id, userName, password, accountId) -> 
+    | AddUserToAccount(UserId id, userName, password, (AccountId accountId)) -> 
         let version, state = getUserState dependencies id
-        Success (id, version, [UserAddedToAccount(UserId id, userName, (dependencies.Hasher password), accountId)])
+        let accountVersion, _ = getAccountState dependencies accountId
+        if accountVersion = defaultVersion then Failure (UserAccountIsMissing accountId)
+        else Success (id, version, [UserAddedToAccount(UserId id, userName, (dependencies.Hasher password), (AccountId accountId))])

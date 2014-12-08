@@ -1,10 +1,12 @@
 ﻿module TAAS.Infrastructure.Railroad
+open System
 
 type Error = 
     | InvalidState of string
     | NotSupportedCommand of string
     | AccountAlreadyExist
     | WrongExpectedVersion
+    | UserAccountIsMissing of Guid
     | UnmatchedDto of string
 
 type Result<'T> =
