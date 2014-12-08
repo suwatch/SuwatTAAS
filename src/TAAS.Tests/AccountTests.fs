@@ -9,7 +9,6 @@ open Commands
 open Types
 
 open TAAS.Domain
-open EventHandling
 open CommandHandling
 open State
 

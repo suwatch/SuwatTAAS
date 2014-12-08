@@ -134,5 +134,3 @@ module EventStore =
             match ex.InnerException with
             | :? WrongExpectedVersionException -> Failure WrongExpectedVersion
             | _ -> reraise()
-//        | :? EventStore.ClientAPI.Exceptions.WrongExpectedVersionException as ex -> Failure WrongExpectedVersion
-//        | :? Exception as ex -> Failure WrongExpectedVersion

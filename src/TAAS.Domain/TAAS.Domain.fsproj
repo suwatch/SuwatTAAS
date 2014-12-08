@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="State.fs" />
-    <Compile Include="EventHandling.fs" />
     <Compile Include="Account.fs" />
     <Compile Include="User.fs" />
     <Compile Include="CommandHandling.fs" />
