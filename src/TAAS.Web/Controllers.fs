@@ -25,7 +25,6 @@ open TAAS.Application.Builder
 module WebStart =
     let es = connect()
 
-
     let map f = 
         match f with 
         | AccountAlreadyExist -> "Account already exists"
