@@ -7,28 +7,36 @@ open Commands
 open Events
 
 open TAAS.Infrastructure
+open ApplicationBuilder
+open Railroad
+
+open EventStore
+
 //open EventStore.DummyEventStore
 open EventStore.EventStore
 
 open TAAS.Domain
+open State
+open CommandHandling
+
 open TAAS.Application
 open Builder
 open Newtonsoft.Json
 
-
 module Test = 
-
     let doStuff = 
         let es = connect()
-        let appendStream = appendToStream es
-        let readStream = readFromStream es
-        let application = createApplication readStream appendStream
+        let application = createApplication
+//
+//        let application = createApplication readStream appendStream
 
         let id = Guid.NewGuid()
         let personId = AccountId(id)
         let c1 = AccountCommand(CreateAccount(personId, "jansson"))
-        application c1
+        let result = application c1
         
+        printfn "%A" result
+
         let (version, (events: Event list)) = readFromStream es (toStreamId id)
 
         let serialized = JsonConvert.SerializeObject(events)

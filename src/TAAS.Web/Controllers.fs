@@ -12,21 +12,33 @@ open Events
 open Types
 
 open TAAS.Infrastructure
-//open EventStore.DummyEventStore
+open Railroad
+open EventStore
 open EventStore.EventStore
 
 open TAAS.Domain
-open CommandHandling
-open EventHandling
+open State
+open Dtos
 
 open TAAS.Application.Builder
 
 module WebStart =
     let es = connect()
- 
-    let appendStream = appendToStream es
-    let readStream = readFromStream es
-    let app = createApplication readStream appendStream
+
+
+    let map f = 
+        match f with 
+        | AccountAlreadyExist -> "Account already exists"
+        | WrongExpectedVersion -> "Version error"
+        | UnmatchedDto s -> sprintf "Failed to match %s" s
+
+    let matchToResult (controller:'T when 'T :> ApiController) res =        
+        match res with
+        | Success events -> controller.Request.CreateResponse(HttpStatusCode.Accepted, events)
+        | Failure f -> controller.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, (map f))
+
+    let app controller dto =
+        dto |> toCommand >>= createApplication |> (matchToResult controller)
 
 module Controllers = 
     open WebStart
@@ -45,11 +57,15 @@ module Controllers =
     type AccountController() = 
         inherit ApiController()
         [<Route>]
-        member this.Post (command:AccountCommand) = 
-            match command with
-            | CreateAccount(_) -> app (AccountCommand(command)) |> ignore
-            | _ -> raise InvalidCommand
-            this.Request.CreateResponse(HttpStatusCode.OK, command)
+        member this.Post (commandDto:CreateAccountDto) = 
+            commandDto |> app this
+
+    [<RoutePrefix("api/account/user")>]
+    type UserController() =
+        inherit ApiController()
+        [<Route>] 
+        member this.Post (commandDto:AddUserToAccountDto) = 
+            commandDto |> app this
 
     [<RoutePrefix("api/events/{id}")>]
     type EventsController() = 

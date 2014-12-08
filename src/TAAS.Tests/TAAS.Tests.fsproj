@@ -53,7 +53,7 @@
     <Compile Include="UserTests.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
-    <Compile Include="When Creating An Account.fs" />
+    <Compile Include="AccountTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAAS.EventStore\TAAS.Infrastructure.fsproj">

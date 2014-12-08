@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dtos.fs" />
     <Compile Include="Controllers.fs" />
     <None Include="packages.config" />
     <None Include="app.config" />

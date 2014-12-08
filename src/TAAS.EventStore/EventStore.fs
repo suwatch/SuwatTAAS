@@ -1,5 +1,9 @@
 ﻿module TAAS.Infrastructure.EventStore
+open Railroad
+
 exception VersionError
+
+let toStreamId id = sprintf "TICKETING-%O" id
 
 [<AutoOpen>]
 module AsyncExtensions =
@@ -71,6 +75,7 @@ module EventStore =
     open EventStore.ClientAPI
     open Newtonsoft.Json
     open EventStore.ClientAPI.SystemData
+    open EventStore.ClientAPI.Exceptions
     open Microsoft.FSharp.Reflection
 
     let connect() = 
@@ -120,5 +125,14 @@ module EventStore =
 
     let appendToStream (store:IEventStoreConnection) streamId expectedVersion newEvents =
         let serializedEvents = newEvents |> List.map serialize |> List.toArray
-        Async.RunSynchronously <| store.AsyncAppendToStream streamId expectedVersion serializedEvents
 
+        try
+            store.AsyncAppendToStream streamId expectedVersion serializedEvents |> Async.RunSynchronously |> ignore
+            Success newEvents
+        with
+        | :? AggregateException as ex ->
+            match ex.InnerException with
+            | :? WrongExpectedVersionException -> Failure WrongExpectedVersion
+            | _ -> reraise()
+//        | :? EventStore.ClientAPI.Exceptions.WrongExpectedVersionException as ex -> Failure WrongExpectedVersion
+//        | :? Exception as ex -> Failure WrongExpectedVersion
