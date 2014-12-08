@@ -3,13 +3,21 @@
 open TAAS.Contract
 open Commands
 open Events
+open State
+open Types
 
-let handleUser hasher state (uc:UserCommand) =
-    match uc with
-    | AddUserToAccount(userId, userName, password, accountId) -> 
-        [UserAddedToAccount(userId, userName, (hasher password), accountId)]
+open TAAS.Infrastructure.Railroad
 
-let evolveUser p event =
+let evolveOneUser state event =
     match event with
-    | UserAddedToAccount(id, _, _, _) -> State.User({Id = id} )
+    | UserAddedToAccount(id, _, _, _) -> {Id = id}
 
+let evolveUser = evolve evolveOneUser
+
+let getUserState dependencies id = evolveUser initUser ((dependencies.ReadEvents id) |> (fun (_, e) -> e))
+
+let handleUser dependencies (uc:UserCommand) =
+    match uc with
+    | AddUserToAccount(UserId id, userName, password, accountId) -> 
+        let version, state = getUserState dependencies id
+        Success (id, version, [UserAddedToAccount(UserId id, userName, (dependencies.Hasher password), accountId)])

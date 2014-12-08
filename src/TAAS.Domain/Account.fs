@@ -7,18 +7,19 @@ open Commands
 open Events
 open State
 
-exception AccountAlreadyExistsException
-exception InvalidStateException
+open TAAS.Infrastructure.Railroad
 
-let handleAccount state ac =
-    let accountState = match state with
-                        | Account s -> s
-                        |_ -> raise InvalidStateException
-    match ac with
-    | CreateAccount(accountId, accountName) -> 
-        if accountState <> initAccount then raise AccountAlreadyExistsException
-        [AccountCreated(accountId, accountName)]
-
-let evolveAccount p event =
+let evolveOneAccount state event =
     match event with
-    | AccountCreated(id, name) -> State.Account({Id = id; AccountName = name} )
+    | AccountCreated(id, name) -> {Id = id; AccountName = name}
+
+let evolveCustomer = evolve evolveOneAccount
+
+let getCustomerState dependencies id = evolveCustomer initAccount ((dependencies.ReadEvents id) |> (fun (_, e) -> e))
+
+let handleAccount dependencies ac =
+    match ac with
+    | CreateAccount(AccountId id, accountName) -> 
+        let (version, state) = getCustomerState dependencies id
+        if state <> initAccount then Failure AccountAlreadyExist
+        else Success (id, version, [AccountCreated(AccountId id, accountName)])

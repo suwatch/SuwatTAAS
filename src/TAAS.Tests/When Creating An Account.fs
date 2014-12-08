@@ -1,4 +1,4 @@
-﻿module TAAS.Tests.``When Creating An Account``
+﻿module TAAS.Tests.AccountTests
 open System
 open Xunit
 open FsUnit.Xunit
@@ -15,9 +15,10 @@ open State
 
 open Specification
 
-[<Fact>]
-let ``account should create account``() =
-    let id = Guid.NewGuid()
-    Given ([], None)
-    |> When (AccountCommand(CreateAccount(AccountId(id), "AccountName")))
-    |> Expect [AccountCreated(AccountId(id), "AccountName")]
+module ``When Creating An Account`` =
+    [<Fact>]
+    let ``account should create account``() =
+        let id = Guid.NewGuid()
+        Given ([], None)
+        |> When (AccountCommand(CreateAccount(AccountId(id), "AccountName")))
+        |> Expect [AccountCreated(AccountId(id), "AccountName")]

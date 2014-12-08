@@ -7,9 +7,7 @@ open Types
 open Account
 open User
 
-type Dependencies = {Hasher: (Password -> PasswordHash)}
-
-let handle deps c state =
+let handle dependencies c =
     match c with
-    | Command.AccountCommand(ac) -> handleAccount state ac
-    | Command.UserCommand(uc) -> handleUser deps.Hasher state uc
+    | Command.AccountCommand(ac) -> handleAccount dependencies ac
+    | Command.UserCommand(uc) -> handleUser dependencies uc

@@ -1,8 +1,4 @@
 ﻿module TAAS.Infrastructure.EventStore
-open Newtonsoft.Json
-
-open Microsoft.FSharp.Reflection
-
 exception VersionError
 
 [<AutoOpen>]
@@ -75,6 +71,7 @@ module EventStore =
     open EventStore.ClientAPI
     open Newtonsoft.Json
     open EventStore.ClientAPI.SystemData
+    open Microsoft.FSharp.Reflection
 
     let connect() = 
         let ipadress = IPAddress.Parse("192.168.50.69")

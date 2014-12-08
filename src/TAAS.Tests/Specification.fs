@@ -1,5 +1,5 @@
 ﻿module TAAS.Tests.Specification
-
+open System
 open Xunit
 open FsUnit.Xunit
 
@@ -11,21 +11,47 @@ open Types
 open TAAS.Domain
 open EventHandling
 open CommandHandling
+open State
 
-type TestSpec = {PreCondition: (Event list * Dependencies option); Action: Command; PostCondition: Event list}
+open TAAS.Infrastructure.EventStore.DummyEventStore
+open TAAS.Infrastructure.ApplicationBuilder
+open TAAS.Infrastructure.Railroad
 
 let defaultDependencies = {
-    Hasher = (fun (Password x) -> PasswordHash x) 
+    Hasher = (fun (Password x) -> PasswordHash x); 
+    ReadEvents = (fun x -> 0,[])
 }
 
-let Given (events: Event list, dependencies: Dependencies option) = events, dependencies
-let When (command: Command) (events: Event list, dependencies: Dependencies option) = events, dependencies, command
-let Expect (expectedEvents:Event list) (events:Event list, dependencies: Dependencies option, command: Command) = 
+let createTestApplication dependencies events = 
+    let es = create()
+    let toStreamId (id:Guid) = sprintf "%O" id
+    let readStream id = readFromStream es (toStreamId id)
+    events |> List.map (fun (id, evts) -> appendToStream es (toStreamId id) -1 evts) |> ignore
     let deps = match dependencies with
-                | Some x -> x
-                | None -> defaultDependencies
+        | Some d -> {d with ReadEvents = readStream}
+        | None -> {defaultDependencies with ReadEvents = readStream}
 
+    let save res = Success res
+    let handler = handle deps
+    buildApplication save handler
+
+let Given (events, dependencies) = events, dependencies
+let When command (events, dependencies) = events, dependencies, command
+let Expect expectedEvents (events, dependencies, command) = 
     printfn "Given: %A" events
     printfn "When: %A" command
     printfn "Expects: %A" expectedEvents
-    evolve command events |> handle deps command |> should equal expectedEvents
+    command 
+    |> (createTestApplication dependencies events) 
+    |> (fun (Success (id, version, events)) -> events)
+    |> should equal expectedEvents
+
+let ExpectFail failure (events, dependencies, command) =
+    printfn "Given: %A" events
+    printfn "When: %A" command
+    printfn "Should fail with: %A" failure
+
+    command 
+    |> (createTestApplication dependencies events) 
+    |> (fun r -> r = Failure failure)
+    |> should equal true

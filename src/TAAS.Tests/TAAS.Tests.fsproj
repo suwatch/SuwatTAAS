@@ -50,12 +50,17 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="Specification.fs" />
-    <Compile Include="When Adding User To An Account.fs" />
+    <Compile Include="UserTests.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
     <Compile Include="When Creating An Account.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TAAS.EventStore\TAAS.Infrastructure.fsproj">
+      <Name>TAAS.Infrastructure</Name>
+      <Project>{b56a2384-57f0-4e38-8a7c-63e583d12817}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <Reference Include="FsUnit.CustomMatchers">
       <HintPath>..\packages\FsUnit.xUnit.1.3.0.1\Lib\net40\FsUnit.CustomMatchers.dll</HintPath>
       <Private>True</Private>
