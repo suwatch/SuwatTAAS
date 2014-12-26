@@ -111,3 +111,5 @@ src/Rapporteringsregisteret.Web/assets/less/*.css
 
 MetricResults/
 *.sln.ide/
+
+_configs/
