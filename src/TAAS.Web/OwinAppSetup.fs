@@ -92,12 +92,14 @@ module OwinStart =
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType)
             app.UseCookieAuthentication(new CookieAuthenticationOptions()) |> ignore
 
+            let appSetting (str:string) = ConfigurationManager.AppSettings.[str]
+
             let openIdConnectAuthenticationOptions = 
-                let authority = sprintf "%s%s" (Settings.IdaAadiNstance.ToString()) (Settings.IdaTenant)
+                let authority = sprintf "%s%s" (appSetting "ida:AADInstance") (appSettings "ida:Tenant")
                 let openIdConnectAuthenticationOptions = new OpenIdConnectAuthenticationOptions()
-                openIdConnectAuthenticationOptions.ClientId <- Settings.IdaClientId
+                openIdConnectAuthenticationOptions.ClientId <- appSetting "ida:ClientId"
                 openIdConnectAuthenticationOptions.Authority <- authority
-                openIdConnectAuthenticationOptions.PostLogoutRedirectUri <- Settings.IdaPostLogoutRedirectUri.ToString()
+                openIdConnectAuthenticationOptions.PostLogoutRedirectUri <- appSetting "ida:PostLogoutRedirectUri"
                 openIdConnectAuthenticationOptions
 
             app.UseOpenIdConnectAuthentication(openIdConnectAuthenticationOptions) |> ignore
