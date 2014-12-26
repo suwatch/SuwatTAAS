@@ -95,7 +95,7 @@ module OwinStart =
             let appSetting (str:string) = ConfigurationManager.AppSettings.[str]
 
             let openIdConnectAuthenticationOptions = 
-                let authority = sprintf "%s%s" (appSetting "ida:AADInstance") (appSettings "ida:Tenant")
+                let authority = sprintf "%s%s" (appSetting "ida:AADInstance") (appSetting "ida:Tenant")
                 let openIdConnectAuthenticationOptions = new OpenIdConnectAuthenticationOptions()
                 openIdConnectAuthenticationOptions.ClientId <- appSetting "ida:ClientId"
                 openIdConnectAuthenticationOptions.Authority <- authority
