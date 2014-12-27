@@ -20,6 +20,8 @@ open TAAS.Application.Builder
 open Microsoft.Owin.Security.ActiveDirectory
 open Microsoft.Owin.Security.OpenIdConnect
 open Microsoft.Owin.Security.Cookies
+open Microsoft.Owin.StaticFiles
+open Microsoft.Owin.Extensions
 open System.Configuration
 open System.Collections.Generic
 open System.Threading.Tasks
@@ -85,7 +87,15 @@ module OwinStart =
             app
         
         let defaultSetup (app:IAppBuilder) = 
-            app.Run(fun c -> c.Response.WriteAsync("Hello TAAS! Why haven't you handled this?"))
+            let fileServerOptions = 
+                let fileServerOptions = FileServerOptions()
+//                fileServerOptions.StaticFileOptions.FileSystem <- Microsoft.Owin.FileSystems.PhysicalFileSystem(@".\bin\content")
+                fileServerOptions.EnableDirectoryBrowsing <- true
+                fileServerOptions.StaticFileOptions.ServeUnknownFileTypes <- true
+                fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("index.html")
+                fileServerOptions
+            app.UseFileServer(fileServerOptions) |> ignore
+            app.UseStageMarker(PipelineStage.MapHandler) |> ignore //https://katanaproject.codeplex.com/wikipage?title=Static%20Files%20on%20IIS&referringTitle=Documentation
             app
 
         let authenticationSetup (app:IAppBuilder) = 
