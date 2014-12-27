@@ -1,0 +1,12 @@
+{
+    "executable": "%ProgramData%\\eventstore\\EventStore.ClusterNode.exe",
+    "options": {
+        "argSeparator": "=",
+        "arguments": {
+            "--db": "c:\\data\\eventstore\\data",
+            "--run-projections": "all",
+            "--http-prefixes": "http://*:2113/",
+            "--ext-ip": "104.46.40.40"
+        }
+    }
+}
