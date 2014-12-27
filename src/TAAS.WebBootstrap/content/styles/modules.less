@@ -1,0 +1,26 @@
+﻿@import "base.less";
+
+.pure-menu {
+    font-weight: lighter;
+    &.pure-menu-fixed {
+        position: fixed;
+    }
+    &.pure-menu-blackbg {
+        background: @primary;
+        .pure-menu-heading:hover {
+            color: @secondary;
+        }
+        a {
+           color: @secondary;
+        }
+        a:hover {
+           background: @contrast2;
+        }
+        .pure-menu-selected a {
+            background: @contrast1;
+        }
+        .pure-menu-selected a:hover {
+            color: @secondary;
+        }
+    }
+}

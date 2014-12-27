@@ -1,1 +1,1 @@
-﻿alert("Hello Tomas");
+﻿console.log("Hello TAAS");

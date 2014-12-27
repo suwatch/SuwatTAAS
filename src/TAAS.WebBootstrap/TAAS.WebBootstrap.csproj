@@ -91,8 +91,28 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app\app.js" />
+    <Content Include="content\styles\base.css">
+      <DependentUpon>base.less</DependentUpon>
+    </Content>
+    <Content Include="content\styles\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="content\styles\modules.css">
+      <DependentUpon>modules.less</DependentUpon>
+    </Content>
+    <Content Include="content\styles\modules.min.css">
+      <DependentUpon>modules.css</DependentUpon>
+    </Content>
     <Content Include="content\styles\site.css.map">
       <DependentUpon>site.css</DependentUpon>
+    </Content>
+    <Content Include="content\styles\base.less" />
+    <Content Include="content\styles\base.css.map">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="content\styles\modules.less" />
+    <Content Include="content\styles\modules.css.map">
+      <DependentUpon>modules.css</DependentUpon>
     </Content>
     <None Include="content\styles\site.less" />
     <Content Include="content\styles\site.css">

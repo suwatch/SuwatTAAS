@@ -1,0 +1,8 @@
+﻿[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+h1 {
+  color: #00a0b0;
+  font-size: x-small;
+}
+/*# sourceMappingURL=base.css.map */
