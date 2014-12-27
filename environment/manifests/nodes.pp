@@ -10,7 +10,7 @@ node 'taas-es' {
 #	include elasticsearch
 	include neo4j
 
-	elasticsearch::plugin { 'marvel': }
+#	elasticsearch::plugin { 'marvel': }
 	package { 'procexp':
 		ensure => '15.13',
 	}
