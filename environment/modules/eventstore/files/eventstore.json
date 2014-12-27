@@ -6,7 +6,7 @@
             "--db": "c:\\data\\eventstore\\data",
             "--run-projections": "all",
             "--http-prefixes": "http://*:2113/",
-            "--ext-ip": "104.46.40.40"
+            "--ext-ip": "100.76.154.24"
         }
     }
 }
