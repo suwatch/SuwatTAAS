@@ -62,7 +62,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -117,10 +117,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TAAS.Application\TAAS.Application.fsproj">
-      <Project>{955e6b47-91c1-40a0-80da-5317d79720bf}</Project>
-      <Name>TAAS.Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TAAS.Contract\TAAS.Contract.fsproj">
       <Project>{7ecf1bc0-3351-428a-af81-ae09f3cc9f6b}</Project>
       <Name>TAAS.Contract</Name>
@@ -128,10 +124,6 @@
     <ProjectReference Include="..\TAAS.Domain\TAAS.Domain.fsproj">
       <Project>{4a6b3ed7-a869-4de7-9013-60e5518da3f1}</Project>
       <Name>TAAS.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TAAS.EventStore\TAAS.Infrastructure.fsproj">
-      <Project>{b56a2384-57f0-4e38-8a7c-63e583d12817}</Project>
-      <Name>TAAS.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\TAAS.Web\TAAS.Web.fsproj">
       <Project>{bf90c064-5fde-4be1-8d1e-782788745d96}</Project>

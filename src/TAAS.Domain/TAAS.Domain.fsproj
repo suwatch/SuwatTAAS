@@ -42,20 +42,17 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="State.fs" />
+    <Compile Include="Railway.fs" />
+    <Compile Include="Helpers.fs" />
     <Compile Include="Account.fs" />
     <Compile Include="User.fs" />
     <Compile Include="CommandHandling.fs" />
+    <Compile Include="DomainBuilder.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAAS.Contract\TAAS.Contract.fsproj">
       <Name>TAAS.Contract</Name>
       <Project>{7ecf1bc0-3351-428a-af81-ae09f3cc9f6b}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\TAAS.EventStore\TAAS.Infrastructure.fsproj">
-      <Name>TAAS.Infrastructure</Name>
-      <Project>{b56a2384-57f0-4e38-8a7c-63e583d12817}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

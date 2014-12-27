@@ -8,11 +8,8 @@ open Events
 open Commands
 open Types
 
-open TAAS.Domain
-open CommandHandling
-open State
-
-open TAAS.Infrastructure.Railroad
+open TAAS.Domain.CommandHandling
+open TAAS.Domain.Railway
 
 open Specification
 
@@ -23,7 +20,7 @@ module ``When Adding User To An Account`` =
         let accountId = Guid.NewGuid()
         let encryptedPassword = "secretStuff"
         let hasher (Password x) = PasswordHash encryptedPassword
-        Given ([(accountId, [AccountCreated(AccountId accountId, "")])], Some {defaultDependencies with Hasher = hasher})
+        Given ([(accountId, [AccountCreated(AccountId accountId, "")])], Some {defaultDependencies with hasher = hasher})
         |> When (Command.UserCommand(AddUserToAccount(UserId(id), "Name", Password("Password"), AccountId(accountId))))
         |> Expect [UserAddedToAccount(UserId(id), "Name", (PasswordHash encryptedPassword), AccountId(accountId))]
 
@@ -33,6 +30,6 @@ module ``When Adding User To An Account`` =
         let accountId = Guid.NewGuid()
         let encryptedPassword = "secretStuff"
         let hasher (Password x) = PasswordHash encryptedPassword
-        Given ([], Some {defaultDependencies with Hasher = hasher})
+        Given ([], Some {defaultDependencies with hasher = hasher})
         |> When (Command.UserCommand(AddUserToAccount(UserId(id), "Name", Password("Password"), AccountId(accountId))))
         |> ExpectFail (UserAccountIsMissing accountId)

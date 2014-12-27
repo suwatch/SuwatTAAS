@@ -10,7 +10,6 @@ open Types
 
 open TAAS.Domain
 open CommandHandling
-open State
 
 open Specification
 

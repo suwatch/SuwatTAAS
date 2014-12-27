@@ -3,22 +3,20 @@ open System
 open Xunit
 open FsUnit.Xunit
 
-open TAAS.Contract
-open Events
-open Commands
-open Types
+open TAAS.Contract.Events
+open TAAS.Contract.Commands
+open TAAS.Contract.Types
 
 open TAAS.Domain
-open CommandHandling
-open State
+open TAAS.Domain.CommandHandling
+open TAAS.Domain.DomainBuilder
+open TAAS.Domain.Railway
 
-open TAAS.Infrastructure.EventStore.DummyEventStore
-open TAAS.Infrastructure.ApplicationBuilder
-open TAAS.Infrastructure.Railroad
+open TAAS.EventStore.DummyEventStore
 
-let defaultDependencies = {
-    Hasher = (fun (Password x) -> PasswordHash x); 
-    ReadEvents = (fun x -> 0,[])
+let (defaultDependencies) = {
+    readEvents = (fun x -> 0,[]);
+    hasher = (fun (Password x) -> PasswordHash x)
 }
 
 let createTestApplication dependencies events = 
@@ -27,12 +25,11 @@ let createTestApplication dependencies events =
     let readStream id = readFromStream es (toStreamId id)
     events |> List.map (fun (id, evts) -> appendToStream es (toStreamId id) -1 evts) |> ignore
     let deps = match dependencies with
-        | Some d -> {d with ReadEvents = readStream}
-        | None -> {defaultDependencies with ReadEvents = readStream}
+        | Some d -> {d with readEvents = readStream}
+        | None -> {defaultDependencies with readEvents = readStream}
 
     let save res = Success res
-    let handler = handle deps
-    buildApplication save handler
+    buildDomainEntry save deps
 
 let Given (events, dependencies) = events, dependencies
 let When command (events, dependencies) = events, dependencies, command

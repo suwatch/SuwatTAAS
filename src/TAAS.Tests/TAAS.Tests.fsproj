@@ -9,9 +9,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>FTSharp.Tests</RootNamespace>
     <AssemblyName>FsCQRSShop.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
     <Name>TAAS.Tests</Name>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,9 +57,9 @@
     <Compile Include="AccountTests.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TAAS.EventStore\TAAS.Infrastructure.fsproj">
-      <Name>TAAS.Infrastructure</Name>
-      <Project>{b56a2384-57f0-4e38-8a7c-63e583d12817}</Project>
+    <ProjectReference Include="..\TAAS.EventStore\TAAS.EventStore.fsproj">
+      <Name>TAAS.EventStore</Name>
+      <Project>{bf32dc2f-f485-4d3e-88db-4ce23a89e001}</Project>
       <Private>True</Private>
     </ProjectReference>
     <Reference Include="FsUnit.CustomMatchers">

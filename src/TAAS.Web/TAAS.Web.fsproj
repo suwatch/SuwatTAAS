@@ -42,7 +42,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
-      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.0\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.1\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin">
@@ -90,7 +90,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
@@ -135,11 +135,6 @@
     <Compile Include="OwinAppSetup.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TAAS.Application\TAAS.Application.fsproj">
-      <Name>TAAS.Application</Name>
-      <Project>{955e6b47-91c1-40a0-80da-5317d79720bf}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\TAAS.Contract\TAAS.Contract.fsproj">
       <Name>TAAS.Contract</Name>
       <Project>{7ecf1bc0-3351-428a-af81-ae09f3cc9f6b}</Project>
@@ -150,9 +145,14 @@
       <Project>{4a6b3ed7-a869-4de7-9013-60e5518da3f1}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\TAAS.EventStore\TAAS.Infrastructure.fsproj">
+    <ProjectReference Include="..\TAAS.EventStore\TAAS.EventStore.fsproj">
+      <Name>TAAS.EventStore</Name>
+      <Project>{bf32dc2f-f485-4d3e-88db-4ce23a89e001}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TAAS.Infrastructure\TAAS.Infrastructure.fsproj">
       <Name>TAAS.Infrastructure</Name>
-      <Project>{b56a2384-57f0-4e38-8a7c-63e583d12817}</Project>
+      <Project>{3deefc39-8287-4d67-a88c-016de875da77}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

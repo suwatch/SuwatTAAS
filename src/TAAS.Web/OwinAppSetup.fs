@@ -9,14 +9,12 @@ open System.Net
 
 open FSharp.Configuration
 
-open TAAS.Contract
-open Commands
-open Types
+open TAAS.Contract.Commands
+open TAAS.Contract.Types
 
 open TAAS.Infrastructure
-open EventStore.DummyEventStore
+open TAAS.EventStore.DummyEventStore
 
-open TAAS.Application.Builder
 open Microsoft.Owin.Security.ActiveDirectory
 open Microsoft.Owin.Security.OpenIdConnect
 open Microsoft.Owin.Security.Cookies

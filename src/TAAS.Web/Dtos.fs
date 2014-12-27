@@ -4,7 +4,7 @@ open TAAS.Contract
 open Commands
 open Types
 
-open TAAS.Infrastructure.Railroad
+open TAAS.Domain.Railway
 
 type CreateAccountDto = {AccountName: string}
 type AddUserToAccountDto = { UserName: string; Password: string; AccountId: Guid}

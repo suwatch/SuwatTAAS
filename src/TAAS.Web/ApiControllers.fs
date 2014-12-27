@@ -11,16 +11,10 @@ open Commands
 open Events
 open Types
 
-open TAAS.Infrastructure
-open Railroad
-open EventStore
-open EventStore.EventStore
-
+open TAAS.EventStore.EventStore
 open TAAS.Domain
-open State
-open Dtos
 
-open TAAS.Application.Builder
+open Dtos
 
 module ApiControllers = 
     open WebStart

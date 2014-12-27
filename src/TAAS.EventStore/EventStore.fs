@@ -1,9 +1,5 @@
-﻿module TAAS.Infrastructure.EventStore
-open Railroad
-
+﻿module TAAS.EventStore
 exception VersionError
-
-let toStreamId id = sprintf "TICKETING-%O" id
 
 [<AutoOpen>]
 module AsyncExtensions =
@@ -38,14 +34,12 @@ module AsyncExtensions =
             Async.AwaitTask(this.SubscribeToAllAsync(resolveLinkTos, eventAppeared, userCredentials = userCredentials))
 
 module DummyEventStore = 
-    open TAAS.Contract
-    open Events
-    type EventStream = {mutable Events: (Event * int) list} with
+    type EventStream<'T> = {mutable Events: ('T * int) list} with
         member this.addEvents events = (this.Events <- events) |> ignore
         static member Version stream =
             stream.Events |> List.map snd |> List.max
 
-    type EventStore = {mutable Streams : Map<string, EventStream> }
+    type EventStore<'T> = {mutable Streams : Map<string, EventStream<'T>> }
 
     let create() = {Streams = Map.empty }
 
@@ -75,7 +69,6 @@ module EventStore =
     open EventStore.ClientAPI
     open Newtonsoft.Json
     open EventStore.ClientAPI.SystemData
-    open EventStore.ClientAPI.Exceptions
     open Microsoft.FSharp.Reflection
 
     let connect() = 
@@ -125,12 +118,5 @@ module EventStore =
 
     let appendToStream (store:IEventStoreConnection) streamId expectedVersion newEvents =
         let serializedEvents = newEvents |> List.map serialize |> List.toArray
+        Async.RunSynchronously <| store.AsyncAppendToStream streamId expectedVersion serializedEvents
 
-        try
-            store.AsyncAppendToStream streamId expectedVersion serializedEvents |> Async.RunSynchronously |> ignore
-            Success newEvents
-        with
-        | :? AggregateException as ex ->
-            match ex.InnerException with
-            | :? WrongExpectedVersionException -> Failure WrongExpectedVersion
-            | _ -> reraise()
