@@ -70,14 +70,18 @@ module EventStore =
     open Newtonsoft.Json
     open EventStore.ClientAPI.SystemData
     open Microsoft.FSharp.Reflection
+    open System.Configuration
 
     let connect() = 
-        let ipadress = IPAddress.Parse("192.168.50.69")
+        let ipString = ConfigurationManager.AppSettings.["eventstore:IPAddress"]
+        let ipadress = IPAddress.Parse(ipString)
         let endpoint = new IPEndPoint(ipadress, 1113)
         let esSettings = 
+            let userName = ConfigurationManager.AppSettings.["eventstore:UserName"]
+            let password = ConfigurationManager.AppSettings.["eventstore:Password"]
             let s = ConnectionSettings.Create()
                         .UseConsoleLogger()
-                        .SetDefaultUserCredentials(new UserCredentials("admin", "changeit"))
+                        .SetDefaultUserCredentials(new UserCredentials(userName, password))
                         .Build()
             s
 
