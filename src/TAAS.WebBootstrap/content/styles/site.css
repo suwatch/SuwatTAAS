@@ -1,4 +1,6 @@
-﻿[class*="fontawesome-"]:before {
+﻿@import "lib/pure-min.css";
+@import "lib/fontawesome.css";
+[class*="fontawesome-"]:before {
   font-family: 'FontAwesome', sans-serif;
 }
 h1 {

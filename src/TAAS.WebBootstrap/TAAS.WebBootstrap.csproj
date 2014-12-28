@@ -97,6 +97,8 @@
     <Content Include="content\styles\base.min.css">
       <DependentUpon>base.css</DependentUpon>
     </Content>
+    <Content Include="content\styles\lib\fontawesome.css" />
+    <Content Include="content\styles\lib\pure-min.css" />
     <Content Include="content\styles\modules.css">
       <DependentUpon>modules.less</DependentUpon>
     </Content>
