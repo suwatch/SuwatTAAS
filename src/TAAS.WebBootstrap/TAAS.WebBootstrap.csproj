@@ -90,7 +90,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app\app.js" />
+    <Content Include="app\app.js" />
     <Content Include="content\styles\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
