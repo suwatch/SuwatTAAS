@@ -98,6 +98,12 @@
       <DependentUpon>base.css</DependentUpon>
     </Content>
     <Content Include="content\styles\fonts\fontawesome\fontawesome-webfont.svg" />
+    <Content Include="content\styles\layout.css">
+      <DependentUpon>layout.less</DependentUpon>
+    </Content>
+    <Content Include="content\styles\layout.min.css">
+      <DependentUpon>layout.css</DependentUpon>
+    </Content>
     <Content Include="content\styles\lib\fontawesome.css" />
     <Content Include="content\styles\lib\pure-min.css" />
     <Content Include="content\styles\modules.css">
@@ -120,6 +126,10 @@
     <Content Include="content\styles\fonts\fontawesome\fontawesome-webfont.eot" />
     <Content Include="content\styles\fonts\fontawesome\fontawesome-webfont.ttf" />
     <Content Include="content\styles\fonts\fontawesome\fontawesome-webfont.woff" />
+    <Content Include="content\styles\layout.less" />
+    <Content Include="content\styles\layout.css.map">
+      <DependentUpon>layout.css</DependentUpon>
+    </Content>
     <None Include="content\styles\site.less" />
     <Content Include="content\styles\site.css">
       <DependentUpon>site.less</DependentUpon>

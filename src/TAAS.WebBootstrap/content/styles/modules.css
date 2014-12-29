@@ -8,14 +8,14 @@ h1 {
 .pure-menu {
   font-weight: lighter;
 }
+.pure-menu.pure-menu-open {
+  border: none;
+}
 .pure-menu.pure-menu-fixed {
   position: fixed;
 }
 .pure-menu.pure-menu-blackbg {
   background: #000000;
-}
-.pure-menu.pure-menu-blackbg .pure-menu-heading:hover {
-  color: #ffffff;
 }
 .pure-menu.pure-menu-blackbg a {
   color: #ffffff;
@@ -28,5 +28,30 @@ h1 {
 }
 .pure-menu.pure-menu-blackbg .pure-menu-selected a:hover {
   color: #ffffff;
+}
+.pure-menu.pure-menu-blackbg .pure-menu-heading:hover {
+  background: #000000;
+}
+.details {
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+}
+.slice {
+  display: inline-block;
+  height: 100%;
+  background: #cc333f;
+}
+.slice.slice-min {
+  width: 300px;
+  background: #eb6841;
+}
+.slice.slice-med {
+  width: 600px;
+  background: #edc951;
+}
+.slice.slice-max {
+  width: 100%;
+  background: #6a4a3c;
 }
 /*# sourceMappingURL=modules.css.map */

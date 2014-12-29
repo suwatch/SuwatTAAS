@@ -2,14 +2,14 @@
 
 .pure-menu {
     font-weight: lighter;
+    &.pure-menu-open {
+        border: none;
+    }
     &.pure-menu-fixed {
         position: fixed;
     }
     &.pure-menu-blackbg {
         background: @primary;
-        .pure-menu-heading:hover {
-            color: @secondary;
-        }
         a {
            color: @secondary;
         }
@@ -22,5 +22,32 @@
         .pure-menu-selected a:hover {
             color: @secondary;
         }
+        .pure-menu-heading:hover {
+            background: @primary;
+        }
+    }
+}
+
+.details {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+}
+
+.slice {
+    display: inline-block;
+    height: 100%;
+    background: @contrast3;
+    &.slice-min {
+        width: 300px;
+        background: @contrast4;
+    }
+    &.slice-med {
+        width: 600px;
+        background: @contrast5;
+    }
+    &.slice-max {
+        width: 100%;
+        background: @contrast2;
     }
 }

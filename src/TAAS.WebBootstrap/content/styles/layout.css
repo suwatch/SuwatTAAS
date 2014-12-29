@@ -1,0 +1,23 @@
+﻿[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+h1 {
+  color: #00a0b0;
+  font-size: x-small;
+}
+#nav {
+  height: 100%;
+  width: 300px;
+  margin-left: -300px;
+  background: #000000;
+  display: inline-block;
+}
+#nav .nav-inner {
+  display: block;
+}
+.content {
+  padding-left: 300px;
+  /*width: 100%;*/
+  white-space: nowrap;
+}
+/*# sourceMappingURL=layout.css.map */
