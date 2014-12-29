@@ -91,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
+    <Content Include="app\lib\jquery-1.11.2.min.js" />
+    <Content Include="app\lib\react_addons.js" />
+    <Content Include="app\lib\react_transformer.js" />
     <Content Include="content\styles\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
